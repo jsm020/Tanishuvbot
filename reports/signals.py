@@ -3,7 +3,9 @@ from django.dispatch import receiver
 from django.core.mail import send_mail
 from django.conf import settings
 import requests
+
 from .models import Report
+from .tasks import notify_admin_via_telegram
 
 @receiver(post_save, sender=Report)
 def notify_admin_on_report(sender, instance, created, **kwargs):
@@ -18,7 +20,6 @@ def notify_admin_on_report(sender, instance, created, **kwargs):
         # 2. Telegram botga xabar yuborish (POST so'rov)
         # Bu URL va TOKEN ni o'zgartiring!
         # Django ichidagi endpointga POST yuboriladi (localhost)
-        BOT_NOTIFY_URL = 'http://localhost:8000/api/report/notify/'
         data = {
             'report_id': instance.id,
             'reporter': str(instance.reporter),
@@ -26,7 +27,4 @@ def notify_admin_on_report(sender, instance, created, **kwargs):
             'reason': instance.reason,
             'timestamp': str(instance.timestamp),
         }
-        try:
-            requests.post(BOT_NOTIFY_URL, json=data, timeout=5)
-        except Exception as e:
-            print('Botga xabar yuborilmadi:', e)
+        notify_admin_via_telegram.delay(data)
