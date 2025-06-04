@@ -7,3 +7,4 @@ aiohttp
 aiogram
 celery[redis]
 redis
+requests

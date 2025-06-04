@@ -152,3 +152,6 @@ CSRF_TRUSTED_ORIGINS = [
 
 # Custom user model
 AUTH_USER_MODEL = "users.User"
+# static fayllarni to‘plab joylashtirish uchun katalog
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
