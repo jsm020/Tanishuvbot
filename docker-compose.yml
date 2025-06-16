@@ -22,8 +22,8 @@ services:
 
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/Dockerfile
     volumes:
       - ./backend:/app
     ports:
@@ -36,8 +36,8 @@ services:
 
   bot:
     build:
-      context: ./bot
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: bot/Dockerfile
     volumes:
       - ./bot:/app
     env_file:
