@@ -4,6 +4,15 @@ from rest_framework import status
 from .models import Chat, Message
 from .serializers import ChatSerializer, MessageSerializer
 from users.models import User
+# views.py (Django)
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+@api_view(['POST'])
+def check_user(request):
+    telegram_id = request.data.get('telegram_id')
+    exists = User.objects.filter(telegram_id=telegram_id).exists()
+    return Response({'exists': exists})
 class ChatMessagesAPIView(APIView):
     def get(self, request):
         chat_id = request.query_params.get('chat')
